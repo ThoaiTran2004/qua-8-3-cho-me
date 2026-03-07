@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo QR Code Chúc Mừng 8/3</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #d63384;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .input-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input[type="url"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ff9a9e;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="url"]:focus {
+            outline: none;
+            border-color: #d63384;
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #ff9a9e 0%, #d63384 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 30px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(214, 51, 132, 0.3);
+        }
+
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            min-height: 256px;
+            align-items: center;
+        }
+
+        .instructions {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .instructions h3 {
+            color: #d63384;
+            margin-bottom: 15px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .download-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 15px;
+            display: none;
+            transition: background 0.3s;
+        }
+
+        .download-btn:hover {
+            background: #218838;
+        }
+
+        .note {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌸 Tạo QR Code Chúc Mừng 8/3 🌸</h1>
+        
+        <div class="input-group">
+            <label for="url">Nhập đường dẫn đến trang chúc mừng 8/3:</label>
+            <input type="url" id="url" placeholder="https://your-website.com/index.html" value="https://grand-biscuit-76da0d.netlify.app/flower-bloom.html">
+        </div>
+
+        <button class="generate-btn" onclick="generateQR()">Tạo QR Code</button>
+
+        <div id="qrcode"></div>
+        
+        <button class="download-btn" id="downloadBtn" onclick="downloadQR()">Tải QR Code</button>
+
+        <div class="instructions">
+            <h3>📋 Hướng dẫn sử dụng:</h3>
+            <ol>
+                <li>Nhập đường dẫn đến trang web chúc mừng 8/3 của bạn</li>
+                <li>Nhấn nút "Tạo QR Code"</li>
+                <li>Lưu QR Code về máy bằng nút "Tải QR Code"</li>
+                <li>In QR Code ra giấy hoặc gửi cho mẹ qua điện thoại</li>
+                <li>Mẹ chỉ cần quét mã QR bằng điện thoại để xem lời chúc!</li>
+            </ol>
+        </div>
+
+        <div class="note">
+            <strong>💡 Lưu ý:</strong> Để QR Code hoạt động, bạn cần tải trang web lên một hosting miễn phí như GitHub Pages, Netlify, hoặc Vercel.
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        let qrcode = null;
+
+        function generateQR() {
+            const url = document.getElementById('url').value.trim();
+            const qrcodeDiv = document.getElementById('qrcode');
+            const downloadBtn = document.getElementById('downloadBtn');
+
+            if (!url) {
+                alert('Vui lòng nhập đường dẫn trang web!');
+                return;
+            }
+
+            // Xóa QR code cũ
+            qrcodeDiv.innerHTML = '';
+
+            try {
+                // Tạo QR code mới
+                qrcode = new QRCode(qrcodeDiv, {
+                    text: url,
+                    width: 256,
+                    height: 256,
+                    colorDark: '#d63384',
+                    colorLight: '#ffffff',
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+
+                // Hiển thị nút tải xuống
+                downloadBtn.style.display = 'inline-block';
+
+                // Thông báo thành công
+                setTimeout(() => {
+                    const successMsg = document.createElement('div');
+                    successMsg.style.cssText = 'color: #28a745; font-weight: bold; margin-top: 10px;';
+                    successMsg.textContent = '✅ QR Code đã được tạo thành công!';
+                    qrcodeDiv.appendChild(successMsg);
+                }, 100);
+
+            } catch (error) {
+                alert('Có lỗi xảy ra khi tạo QR Code: ' + error.message);
+            }
+        }
+
+        function downloadQR() {
+            const canvas = document.querySelector('#qrcode canvas');
+            if (!canvas) {
+                alert('Vui lòng tạo QR Code trước!');
+                return;
+            }
+
+            // Tạo link tải xuống
+            const link = document.createElement('a');
+            link.download = 'QR-Code-Chuc-Mung-8-3.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        // Tự động tạo QR code với URL mặc định khi tải trang
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                generateQR();
+            }, 500);
+        });
+    </script>
+</body>
+</html>
